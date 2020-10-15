@@ -16,6 +16,7 @@ workflows:
   build-master:
     jobs:
       - build:
+          dockerfile: ~/project/app/Dockerfile
           filters:
             branches:
               only: main
