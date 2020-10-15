@@ -56,7 +56,7 @@ workflows:
       - aws-ecr/build_and_push_image:
           name: build-and-push-image
           account-url: AWS_ECR_URL
-          region: AWS_DEFAULT_REGION
+          region: $AWS_DEFAULT_REGION
           repo: cnid-test
           dockerfile: ~/project/app/Dockerfile
           path: ~/project/app/
@@ -64,14 +64,14 @@ workflows:
           # Uncomment if the repository does not yet exist
           # create-repo: true
       - aws-eks/create-cluster:
-          cluster-name: cnid-test-k8s-8
+          cluster-name: cnid-test-k8s
           aws-region: $AWS_DEFAULT_REGION
           requires:
             - build-and-push-image
       - deploy-application:
-          cluster-name: cnid-test-k8s-8
+          cluster-name: cnid-test-k8s
           aws-region: $AWS_DEFAULT_REGION
-          docker-image-name: "${AWS_ECR_URL}/br-test:${CIRCLE_SHA1}"
+          docker-image-name: "${AWS_ECR_URL}/cnid-test:${CIRCLE_SHA1}"
           version-info: "${CIRCLE_SHA1}"
           requires:
             - aws-eks/create-cluster
